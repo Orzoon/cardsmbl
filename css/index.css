@@ -1,4 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;500;600;700;800&family=Open+Sans:wght@300;400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,600;0,700;1,600;1,700&family=Open+Sans:wght@300;400;500;700&display=swap");
 *, *::after, *::before {
   padding: 0px;
   margin: 0px;
@@ -11,6 +12,7 @@ html {
 }
 
 body {
+  position: relative;
   overflow: hidden;
   font-family: "Noto Sans", sans-serif;
   color: #fff;
@@ -21,13 +23,18 @@ body {
   grid-template-columns: 1fr;
   justify-items: center;
   align-items: center;
+  overflow: hidden !important;
+  background-color: #393b44;
+  background: none;
 }
 
 section.mobileContainer {
   opacity: 0;
   z-index: 9999;
   position: absolute;
-  position: relative;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   padding: 10px 20px;
   padding-top: 0px;
   overflow: hidden;
@@ -181,22 +188,128 @@ section.mobileContainer {
   height: 100%;
   list-style-type: none;
   display: grid;
-  grid-template-columns: auto auto auto auto;
+  grid-template-columns: repeat(8, auto);
   grid-template-rows: 1fr;
   padding-bottom: -20px;
   align-items: end;
 }
 
 .card {
+  position: relative;
+  overflow: hidden;
   margin-left: 20px;
   display: inline-block;
   height: 300px;
   width: 200px;
   border-radius: 10px;
   cursor: pointer;
+  background-size: cover;
 }
 .card:nth-child(4) {
   border: none !important;
+}
+
+ul.cul {
+  padding: 20px;
+  border-radius: inherit;
+  z-index: 99999;
+  top: 50px;
+  left: -50px;
+  transform-origin: center center;
+  transform: rotate(-90deg);
+  overflow: hidden;
+  position: absolute;
+  height: 200px;
+  width: 300px;
+  padding: 20px;
+  display: grid;
+  grid-template-columns: 10px 1fr 100px;
+  grid-template-rows: repeat(3, 1fr);
+}
+ul.cul li {
+  list-style-type: none;
+  display: grid;
+  align-items: center;
+  color: rgb(237, 228, 228);
+}
+ul.cul .c_heading {
+  grid-area: 1/1/2/3;
+  font-size: 20px;
+  font-weight: 600;
+}
+ul.cul .c_Icon_top {
+  grid-area: 1/3/2/4;
+  height: 35px;
+  width: 35px;
+  align-self: center;
+  justify-self: end;
+}
+ul.cul .c_Icon_top img {
+  width: 100%;
+  height: 100%;
+  transform: rotate(90deg);
+}
+ul.cul .c_chip {
+  grid-area: 2/1/3/3;
+  height: 45px;
+  width: 48px;
+  display: grid;
+  justify-items: center;
+  align-items: end;
+}
+ul.cul .c_chip svg {
+  width: 100% !important;
+  height: 100% !important;
+}
+ul.cul .c_number {
+  grid-area: 2/2/3/4;
+  display: grid;
+  align-items: end;
+  justify-items: end;
+  height: 45px;
+  font-size: 18px;
+  font-weight: 600;
+}
+ul.cul .card_holder {
+  align-self: end;
+  grid-area: 3/1/4/3;
+  display: grid;
+}
+ul.cul .card_holder p {
+  font-size: 10px;
+  font-weight: 400;
+  text-transform: uppercase;
+}
+ul.cul .card_holder h4 {
+  font-size: 14px;
+  font-weight: 600;
+}
+ul.cul .VisaLogo {
+  grid-area: 3/3/4/4;
+  justify-self: end;
+  align-self: end;
+  width: 100%;
+  height: 35px;
+  display: grid;
+  align-items: end;
+  justify-items: end;
+}
+ul.cul .VisaLogo svg {
+  height: 100%;
+  width: auto;
+}
+ul.cul .VisaLogo h2.visaText {
+  display: grid;
+  justify-self: end;
+  align-items: end;
+  justify-items: end;
+  width: 100%;
+  height: 100%;
+  font-size: 30px;
+  font-weight: 900;
+  width: 100%;
+  padding: 0px;
+  font-family: "Noto Sans", sans-serif;
 }
 
 .mobileContainer::-webkit-scrollbar {
@@ -230,16 +343,130 @@ section.mobileContainer {
   -webkit-overflow-scrolling: touch;
 }
 
+.card1, .card2, .card3, .card4, .card5, .card6 {
+  background-repeat: no-repeat !important;
+  background-size: cover !important;
+}
+
 .card1 {
-  background-color: rgb(255, 136, 0);
+  background: url(/assets/b4.svg);
 }
 
 .card2 {
-  background-color: rgb(0, 157, 255);
+  background: url(/assets/b5.svg);
 }
 
 .card3 {
-  background-color: rgb(73, 69, 69);
+  background: url(/assets/brown.svg);
+}
+
+.card4 {
+  background: url(/assets/wave2.svg);
+}
+
+.card5 {
+  background: url(/assets/b2.svg);
+}
+
+.card6 {
+  background-color: rgb(51, 14, 234);
+  background: url(/assets/b7.svg);
+}
+
+.BFLine1 {
+  background: #F7471B;
+}
+
+.BFLine2 {
+  background: #046BFE;
+}
+
+.BFLine3 {
+  background: #3A3D40;
+}
+
+.BFLine4 {
+  background: #D53CFE;
+}
+
+.BFLine5 {
+  background: #0160F5;
+}
+
+.BFLine6 {
+  background: #DE5D39;
+}
+
+.backFace1 {
+  background: #FB721F;
+}
+
+.backFace2 {
+  background: #068DFE;
+}
+
+.backFace3 {
+  background: #45484B;
+}
+
+.backFace4 {
+  background: #DD56FF;
+}
+
+.backFace5 {
+  background: #1C96EE;
+}
+
+.backFace6 {
+  background: #F99407;
+}
+
+.BFPin1 {
+  color: #F7471B;
+}
+
+.BFPin2 {
+  color: #046BFE;
+}
+
+.BFPin3 {
+  color: #3A3D40;
+}
+
+.BFPin4 {
+  color: #D53CFE;
+}
+
+.BFPin5 {
+  color: #0160F5;
+}
+
+.BFPin6 {
+  color: #DE5D39;
+}
+
+.li_logo1 {
+  background: #F7471B;
+}
+
+.li_logo2 {
+  background: #046BFE;
+}
+
+.li_logo3 {
+  background: #3A3D40;
+}
+
+.li_logo4 {
+  background: #D53CFE;
+}
+
+.li_logo5 {
+  background: #0160F5;
+}
+
+.li_logo6 {
+  background: #DE5D39;
 }
 
 .newCardBgFix {
@@ -252,22 +479,70 @@ section.mobileContainer {
   background: #000;
 }
 
+.cardsContainerWrapper {
+  perspective: 800px !important;
+}
+
 .newCard {
   z-index: 8;
   position: absolute;
   left: 0%;
   bottom: 0%;
-  background: red;
   height: 300px;
   width: 200px;
   border-radius: 10px;
+  transform-style: preserve-3d !important;
+  cursor: pointer;
+}
+.newCard .newCUL {
+  -webkit-backface-visibility: hidden !important;
+          backface-visibility: hidden !important;
+}
+.newCard .backFace {
+  -webkit-backface-visibility: hidden !important;
+          backface-visibility: hidden !important;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  transform-origin: center center;
+  transform: rotateX(180deg);
+  color: #fff;
+  overflow: hidden;
+  border-radius: 10px;
+}
+.newCard .backFace .BFCover {
+  position: absolute;
+  height: 150px;
+  width: 145%;
+  left: 50%;
+  top: 50%;
+  transform-origin: center center;
+  transform: translate(-50%, -50%) rotate(-90deg);
+  display: grid;
+  justify-items: start;
+  align-items: end;
+  padding-bottom: 30px;
+}
+.newCard .backFace .BFCover .BFPin {
+  width: 100%;
+  padding: 5px 10px;
+  border-radius: 2px;
+  background: rgb(255, 254, 254);
+  font-weight: 600;
+}
+.newCard .backFace .BFCover .BFLine {
+  position: absolute;
+  bottom: 62px;
+  left: -50%;
+  width: 200%;
+  height: 30px;
 }
 
 .CButtonsCon {
-  width: 32px;
+  width: 52px;
   height: 50px;
   display: grid;
-  grid-template-columns: auto auto auto;
+  grid-template-columns: repeat(6, auto);
   grid-template-rows: 1fr;
   overflow: hidden;
   justify-content: space-between;
@@ -320,8 +595,25 @@ ul.listSectionFirst li {
 ul.listSectionFirst li .li_logo {
   height: 40px;
   width: 40px;
-  background: #ddd;
   border-radius: 50%;
+  display: grid;
+  justify-items: center;
+  align-items: center;
+}
+ul.listSectionFirst li .li_logo .svgContainer {
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  display: grid;
+  justify-items: center;
+  align-items: center;
+}
+ul.listSectionFirst li .li_logo .svgContainer p {
+  font-weight: 600;
+}
+ul.listSectionFirst li .li_logo .appleLogo {
+  height: 20px !important;
+  width: 20px !important;
 }
 ul.listSectionFirst li .li__mid h2.li_Title {
   font-size: 16px;
@@ -389,5 +681,12 @@ ul.listSectionFirst li.listHeading .ulFix::after {
   left: 50%;
   transform: translate(-50%, -50%);
   border-radius: 50%;
+}
+
+.lastLoader {
+  width: 100%;
+  height: 100%;
+  background: none;
+  border-radius: none !important;
 }
 /*# sourceMappingURL=index.css.map */

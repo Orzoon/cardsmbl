@@ -1,10 +1,13 @@
 
 
+
 window.addEventListener("load", () => {
     // seting css
     // outerGlobalsVa
     //MainGlobal
-    const colorArr  = ["red", "blue", "green"]
+    const colorArr  = ["red", "#393b44", "#0367FF" ,"#F6451B", "#none"]// last is just overlay
+    const colorArrCopy = ["#F6451B", "#035CF5", "rgb(69,72,75)","#CD10FE", "#0063F6", "#DE5D39"]; 
+    let changeColorBool = false;
     init();
     intialCSSSet();
     intialAnimation();
@@ -29,8 +32,9 @@ window.addEventListener("load", () => {
     //* BUTTON
     const backButton = document.querySelector(".backButton");
     //** GLOBAL VARS **/
-    const amountArr = [45670.00,364.00,6754.00,0000]
-    const timelineArray = []
+    let CardRotated  = false;
+    const amountArr = [45670.00,364.00,6754.00,5000.00,19.00,000]
+    const timelineArray = [];
     let currentActiveClickableIndex = null;
     let stepSecond = false;
     let scrollDisabled = false;
@@ -49,7 +53,7 @@ window.addEventListener("load", () => {
 
 
     // scrollTrigger for CARDS
-    for(let i =0; i < 3; i++){
+    for(let i =0; i < cards.length; i++){
 
         let anim = gsap.timeline({})
         anim.to(cards[i], {
@@ -104,12 +108,17 @@ window.addEventListener("load", () => {
                     t.play();
                     // changeAmount
                     _changeAmount(amountArr[index], 300)
-                    currentActiveClickableIndex = index
+                    currentActiveClickableIndex = index;
                     // scrolling to the position on Scroll
                     // subtracting the margin_left amount
                     // cardsMainContainerScroll.scrollTo({
                     //     left: cards[index].offsetLeft - 20,
                     //     behavior: 'smooth'})
+
+                    // color
+                    
+                    changeColorBool ? changeColor(colorArrCopy[index]) : "";
+                    (() => {console.log(changeColorBool)})();
                 },
                 onLeave: () => {
                     t.reverse();
@@ -121,6 +130,7 @@ window.addEventListener("load", () => {
                     // cardsMainContainerScroll.scrollTo({
                     //     left: cards[index].offsetLeft - 20,
                     //     behavior: 'smooth'})
+                    changeColorBool ? changeColor(colorArrCopy[index]) : "";
                 },
                 onLeaveBack: () => {
                     t.reverse();
@@ -187,9 +197,14 @@ window.addEventListener("load", () => {
         if(index !== currentActiveClickableIndex) return null;
         // ? Positioning to the scrollLeft  --// just in case
         //TODO: maybe scroll to leftall the way
-        cardsMainContainerScroll.scrollTo({left: cards[cards.length-1].offsetLeft - 20})
-        //cardsMainContainerScroll.scrollTo({left: 0,behavior: 'smooth'})
+        changeColorBool = false;
+        cardsMainContainerScroll.scrollTo({left: cards[cards.length-1].offsetLeft})
+        //cardsMainContainerScroll.scrollTo({left: cards[1].offsetLeft - 20})
+       
         // overflow--scroll --- change scroll --paddidng --style
+        cards.forEach(card => {
+            card.style.opacity = "0 !important"
+        })
         //** Disabling the scroll **/
         scrollPos = cardsMainContainerScroll.scrollLeft;
         scrollDisabled = true;
@@ -199,6 +214,32 @@ window.addEventListener("load", () => {
         cardsMainContainerScroll.style.pointerEvents = "none";
         //** Creating the copy on  the same place **/
         const newCard = document.createElement("DIV");
+
+        // cloning innerUL
+        const cloneUL = cards[index].firstElementChild.cloneNode(true) ;
+        cloneUL.classList.add("newCUL")
+        cloneUL.classList.add(`card${index+1}`)
+
+        // backFace
+        const backFace = document.createElement("DIV");
+        const BFCover = document.createElement("DIV");
+        const BFLine = document.createElement("DIV")
+        const BFPin = document.createElement("DIV")
+
+        backFace.setAttribute("class", `backFace backFace${index+1}`);
+        BFCover.setAttribute("class", `BFCover`)
+        BFLine.setAttribute("class", `BFLine BFLine${index+1}`)
+        BFPin.setAttribute("class", `BFPin BFPin${index+1}`)
+        BFPin.innerText = "1234"
+        BFCover.appendChild(BFLine)
+        BFCover.appendChild(BFPin)
+        backFace.appendChild(BFCover)
+
+
+        newCard.appendChild(backFace)
+        newCard.appendChild(cloneUL)
+
+
         const newCardBgFix = document.createElement("DIV")
         newCard.setAttribute("class", `newCard`) // setting data attribute laterON for card type
         newCardBgFix.setAttribute("class",'newCardBgFix')
@@ -206,10 +247,11 @@ window.addEventListener("load", () => {
         cardsContainerWrapper.appendChild(newCard);
         cardsContainerWrapper.appendChild(newCardBgFix)
         //** Creating the copy on  the same place **/
-
+        // cloning
+     
 
         //** REMOVING ALL THE CARDS WITH OPACITY */
-        //--> t1
+        
         let t1 = gsap.timeline({
             onReverseComplete: () => {
                 timelineArray[0].kill();
@@ -242,14 +284,14 @@ window.addEventListener("load", () => {
             opacity: 1,
             duration: 0.6
         })
-        .to(newCard, {
+        .to(newCard,{
             //scale: 0.4,
             xPercent:-50, 
             left:"50%", 
             yPercent:-50, 
             top:"50%", 
-            x:0, 
-            y:0,
+            //x:0, 
+            //y:0,
             duration: 0.2,
             scale: 0.5,
             rotate: 90,
@@ -258,17 +300,43 @@ window.addEventListener("load", () => {
         .to(newCard, {
             // height BecomesWIdth and width becomes height
             height:  260,// become width
-            width:  150,// actually height
+            width:  160,// actually height
             scale: 1,
             duration: 0.3,
             delay: 0
         }, ">")
+        .to(cloneUL, {
+            width: 260,
+            height: 160,
+            duration: 0.3,
+            delay: 0,
+            padding: 8,
+        }, "<")
         // decreaing size to fit
         .to(".cardsContainerWrapper", {
             height: 200, // laterOn based on mediaQueries
             duration: 0.2,
             onComplete: () => {
                enableScroll()
+               // addingEvent listener
+               newCard.addEventListener("click", () => {
+                    if(!CardRotated && stepSecond){
+                        CardRotated = true;
+                        gsap.to(newCard, {
+                            rotateX: 180,
+                            duration: 0.8,
+                            ease: "circ.out"
+                        })
+                    }
+                    else if(stepSecond && CardRotated) {
+                        CardRotated = false;
+                        gsap.to(newCard, {
+                            rotateX: 0,
+                            duration: 0.8,
+                            ease: "circ.out"
+                        })
+                    }
+               })
             }
         }, "<")
         //** enabling the scroll option and attaching the scroller*/
@@ -316,48 +384,73 @@ window.addEventListener("load", () => {
     function _reverseStep2(index){
         if(!scrollDisabled || !stepSecond) return null;
 
-        // step second is on---> scroll to top
-        mobileContainer.scrollTo({
-            top: 0,
-            behavior: 'smooth'
-        })
-        // removing scroll Behaviour--and scrollTriggers
-        mobileContainer.style.overflowY = "hidden";
-        // removing the triggers
-        triggerArray.forEach((triggerID, index) => {
-            ScrollTrigger.getById(triggerID).kill();
-        })
-        triggerArray.length = 0;
+        
+        if(CardRotated){
+            CardRotated = false;
+            gsap.to(".newCard", {
+                rotateX: 0,
+                duration: 0.8,
+                ease: "circ.out"
+            })
+        }
 
-        // reverting the timeline animation
-        timelineArray[0].reverse();
-        /** EnablingBefore */
-        scrollDisabled = false;
-        stepSecond = false;
-        // setting now for smooth later on
-        cardsMainContainerScroll.scrollTo({left: cards[cards.length-1].offsetLeft - 20})
+
+        setTimeout(() => {
+             // step second is on---> scroll to top
+            mobileContainer.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            })
+            // removing scroll Behaviour--and scrollTriggers
+            mobileContainer.style.overflowY = "hidden";
+            // removing the triggers
+            triggerArray.forEach((triggerID, index) => {
+                ScrollTrigger.getById(triggerID).kill();
+            })
+            triggerArray.length = 0;
+
+            // reverting the timeline animation
+            timelineArray[0].reverse();
+            /** EnablingBefore */
+            scrollDisabled = false;
+            stepSecond = false;
+            // setting now for smooth later on
+            cardsMainContainerScroll.scrollTo({left: cards[cards.length-1].offsetLeft - 20})
+        }, CardRotated ? 800 : 0)
+       
     }
 
     function _reverseRest(){
         //afterReverseComplete
         // onComplete killed from onReverseComplete
-
+        changeColorBool = true;
         //todo: remove card
         cards.forEach(card => {
             card.style.opacity = 1;
         })
         const newCard = document.querySelector(".newCard");
         const newCardBgFix = document.querySelector(".newCardBgFix");
-        newCard.remove();
-        newCardBgFix.remove();
-       
-        //**allowing scroll**/
-        cardsMainContainerScroll.style.pointerEvents = "auto";
-        //**setValuesBack--variables
-        //**scrollingBack */
-        cardsMainContainerScroll.scrollTo({
-                left: cards[0].offsetLeft - 20,
-                behavior: 'smooth'})
+        gsap.to(newCard, {
+            delay: 0,
+            left: -50,
+            rotate: -20,
+            duration: 0.5,
+            scale: 0.8,
+            opacity: 0,
+            transformOrigin: "bottom left",
+            onComplete: () => {
+                newCard.remove();
+                newCardBgFix.remove();
+               
+                //**allowing scroll**/
+                cardsMainContainerScroll.style.pointerEvents = "auto";
+                //**setValuesBack--variables
+                //**scrollingBack */
+                cardsMainContainerScroll.scrollTo({
+                        left: cards[0].offsetLeft - 20,
+                        behavior: 'smooth'})
+            }
+        })
     }
 
     function setTime(){
@@ -415,15 +508,19 @@ window.addEventListener("load", () => {
         let maxWidth = ratio < 1 ? window.innerHeight* 1.4 : window.innerWidth * 1.4;
         colorArr.forEach((color, index) => {
             const elem = document.createElement("DIV");
-            elem.setAttribute("class", "loader");
-            elem.style.backgroundColor = color;
-            console.log(color)
+            if(index  === color.length - 1){
+                elem.setAttribute("class", "lastLoader");
+            }else {
+                elem.setAttribute("class", "loader");
+            }
+            elem.style.backgroundColor = (index === color.length - 1) ? "none" : color  ;
             document.body.appendChild(elem);
+            if(index === color.length - 1) return null;
             const t1 = gsap.timeline();
             t1.to(elem, {
                 height: maxWidth,
                 width: maxWidth,
-                duration: 1 - (index * 0.1),
+                duration: 1 - (index * 0.15),
                 ease: "circ.inOut",
                 //ease: "slow(0.9, 0.7, false)",
                 delay: 0
@@ -431,7 +528,7 @@ window.addEventListener("load", () => {
 
             ms.add(t1, "<0.2")
 
-            if(index === colorArr.length -1){
+            if(index === colorArr.length -2){
                 ms.from(".mobileContainer", {
                     scale: 0,
                     duration: 1
@@ -484,6 +581,19 @@ window.addEventListener("load", () => {
             const cards = document.querySelectorAll(".card")
             const container = document.querySelector(".cardsMainContainerScroll");
             container.scrollTo({left: cards[0].offsetLeft - 20, behavior: "smooth"})
+
+            // after coming back ---> setting backgroundColor
+            changeColorBool = true;
+            // land to the same color
+            changeColor(colorArrCopy[0], "true")
         }
+    }
+    function changeColor(color, first = false){
+        if(!changeColorBool) return null;
+
+        gsap.to(".lastLoader",{
+            backgroundColor: color,
+            duration: first === "true" ? 0 : 0.5
+        } )
     }
 })
